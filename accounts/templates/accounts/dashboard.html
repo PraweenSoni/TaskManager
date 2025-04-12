@@ -1,0 +1,3 @@
+<h2>Welcome, {{ user.email }}</h2>
+<p>Your phone: {{ user.phone|default:"N/A" }}</p>
+<a href="{% url 'logout' %}">Logout</a>
