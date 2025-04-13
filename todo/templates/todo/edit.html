@@ -1,0 +1,8 @@
+<h2>Edit Task: {{ todo.title }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+<a href="{% url 'todo_dashboard' %}">Back to Dashboard</a>

@@ -1,0 +1,25 @@
+<h2>Todo Dashboard</h2>
+<a href="{% url 'dashboard' %}">
+    <button>⬅️ Back to Main Dashboard</button>
+</a>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Task</button>
+</form>
+
+<hr>
+
+<h3>Your Tasks</h3>
+{% for todo in todos %}
+    <div style="margin-bottom: 10px;">
+        <strong>{{ todo.title }}</strong> - {{ todo.description }}
+        <br>Status: {{ todo.completed|yesno:"✔️ Completed,❌ Not completed" }}
+        <br>
+        <a href="{% url 'edit_todo' todo.id %}">Edit</a> |
+        <a href="{% url 'delete_todo' todo.id %}">Delete</a>
+    </div>
+{% empty %}
+    <p>No tasks yet.</p>
+{% endfor %}
