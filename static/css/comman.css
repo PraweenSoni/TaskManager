@@ -1,0 +1,27 @@
+header {
+  background: #2b6777;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #2b6777;
+  color: white;
+  text-align: center;
+  padding: 25px;
+  margin-top: 60px;
+}

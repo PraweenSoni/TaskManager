@@ -74,6 +74,9 @@ TEMPLATES = [
     },
 ]
 
+STATIC_URL = '/static' # below this add the following line
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 WSGI_APPLICATION = 'TaskManager.wsgi.application'
 
 

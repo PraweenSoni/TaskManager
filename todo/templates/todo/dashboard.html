@@ -1,25 +1,201 @@
-<h2>Todo Dashboard</h2>
-<a href="{% url 'dashboard' %}">
-    <button>⬅️ Back to Main Dashboard</button>
-</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Taskify - To-Do List</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f0f4f8;
+        height: 100vh;
+      }
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Task</button>
-</form>
+      form{
+        width: 100%;
+      }
+      .main-container{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
 
-<hr>
+      .todo-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+      }
 
-<h3>Your Tasks</h3>
-{% for todo in todos %}
-    <div style="margin-bottom: 10px;">
-        <strong>{{ todo.title }}</strong> - {{ todo.description }}
-        <br>Status: {{ todo.completed|yesno:"✔️ Completed,❌ Not completed" }}
-        <br>
-        <a href="{% url 'edit_todo' todo.id %}">Edit</a> |
-        <a href="{% url 'delete_todo' todo.id %}">Delete</a>
+      h2 {
+        text-align: center;
+        color: #2b6777;
+        margin-bottom: 20px;
+      }
+
+      .input-section {
+        width: 100%;
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .input-section input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px 0 0 8px;
+        outline: none;
+        width: 70%;
+      }
+
+      .input-section button {
+        padding: 10px 20px;
+        background-color: #2b6777;
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #f8f9fa;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      li.completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+
+      .btns {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btns button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .btns button.complete {
+        color: green;
+      }
+
+      .btns button.delete {
+        color: red;
+      }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/comman.css' %}" />
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <h2>
+      Todo Dashboard
+      <a href="{% url 'dashboard' %}">⬅️ Back</a>
+    </h2>
+
+    <div class="main-container">
+      <div class="todo-container">
+        <h2>📝 Taskify - To-Do List</h2>
+
+        <div class="input-section">
+          <form action="{% url 'todo_dashboard' %}" method="POST">
+            {% csrf_token %} {% comment %} {{ form.as_p }} {% endcomment %}
+            <input
+              type="text"
+              id="taskInput"
+              name="title"
+              id="title"
+              placeholder="Enter new task..."
+            />
+            {% if form.title.errors %}
+            <div class="error">{{ form.title.errors }}</div>
+            {% endif %}
+            <button type="submit">Add Task</button>
+            {% comment %} <button onclick="addTask()">Add</button> {%endcomment%}
+          </form>
+        </div>
+
+        <h3>Your Tasks</h3>
+        <ul>
+          {% for todo in todos %}
+          <li style="margin-bottom: 10px">
+            <strong>{{ todo.title }}</strong> - {{ todo.description }} Status:
+            {{todo.completed|yesno:"✔️,❌"}}
+            <a href="{% url 'edit_todo' todo.id %}" title="Edit To-Do">Edit</a>
+            |
+            <a href="{% url 'delete_todo' todo.id %}" title="delete To-Do"
+              >🗑️</a
+            >
+          </li>
+          {% empty %}
+          <p>No tasks yet.</p>
+          {% endfor %}
+        </ul>
+        <ul id="taskList"></ul>
+      </div>
     </div>
-{% empty %}
-    <p>No tasks yet.</p>
-{% endfor %}
+
+    <script>
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      function renderTasks() {
+        const list = document.getElementById("taskList");
+        list.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+          const li = document.createElement("li");
+          li.className = task.completed ? "completed" : "";
+
+          li.innerHTML = `
+          ${task.text}
+          <div class="btns">
+            <button class="complete" onclick="toggleComplete(${index})">✔️</button>
+            <button class="delete" onclick="deleteTask(${index})">🗑️</button>
+          </div>
+        `;
+          list.appendChild(li);
+        });
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function addTask() {
+        const input = document.getElementById("taskInput");
+        const text = input.value.trim();
+
+        if (text !== "") {
+          tasks.push({ text, completed: false });
+          input.value = "";
+          renderTasks();
+        }
+      }
+
+      function toggleComplete(index) {
+        tasks[index].completed = !tasks[index].completed;
+        renderTasks();
+      }
+
+      function deleteTask(index) {
+        tasks.splice(index, 1);
+        renderTasks();
+      }
+
+      renderTasks();
+    </script>
+  </body>
+</html>

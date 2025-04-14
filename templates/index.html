@@ -1,12 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-</head>
-<body>
-    <h1>Welcome to Task Manager Application</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio repellat doloribus dolores veritatis perferendis ipsam iste ex sunt necessitatibus dolorum ducimus voluptas labore corrupti dolore, quas nobis! Quod ratione, distinctio quia assumenda tempore eum unde impedit eveniet temporibus vero ea amet? Id excepturi magnam molestias necessitatibus beatae aperiam, harum possimus! Saepe nihil, quas illum cum, deserunt ipsam minus porro asperiores, hic obcaecati praesentium libero! Fugiat quia, saepe mollitia molestiae quaerat modi. Doloremque ab fuga dolor quisquam commodi optio enim quae. Facilis neque nihil fuga quisquam dolor obcaecati pariatur corrupti architecto, sapiente debitis quis consectetur natus at maiores nemo quaerat similique. Molestiae quod natus quis consectetur blanditiis quisquam consequuntur laborum repellat eius. Tenetur consectetur laboriosam quisquam quaerat, temporibus earum reiciendis illo nemo dolore doloribus culpa blanditiis beatae maiores. Fugit eos molestiae tempore optio quasi laudantium molestias quis ea dolor soluta inventore omnis iure ullam, architecto doloribus officia nesciunt nemo accusantium. Explicabo mollitia porro rem quae, delectus aut? Saepe, explicabo voluptates? Possimus, nisi. Veritatis, consequuntur. Porro odit fugiat, enim sed quas magni, eos cum praesentium ea aliquam tenetur, esse vitae. Consequuntur, quis vero excepturi iure recusandae unde laborum placeat itaque quibusdam distinctio. Doloribus impedit, ipsum praesentium nesciunt sit unde debitis assumenda perferendis?</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Taskify</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/comman.css' %}" />
+  </head>
+  <body>
+    {% include "header.html" %}
+    <section class="hero">
+      <h2>All-in-One Productivity Suite</h2>
+      <p>
+        Stay organized, stay mindful — with tasks, notes, and your daily
+        journal.
+      </p>
+    </section>
+
+    <section class="features">
+      <div class="card">
+        <h3>To-Do List 📝</h3>
+        <p>Plan your day with smart task lists and reminders.</p>
+      </div>
+      <div class="card">
+        <h3>Expense Manager 💸</h3>
+        <p>Keep track of your spending and income with ease.</p>
+      </div>
+      <div class="card">
+        <h3>Notes App 🗒️</h3>
+        <p>Write, save, and organize your notes anytime.</p>
+      </div>
+      <div class="card">
+        <h3>Daily Journal 🖊️</h3>
+        <p>Write your thoughts, emotions, and experiences daily.</p>
+      </div>
+    </section>
+
+    <section class="button">
+      <button onclick="location.href='{% url "login" %}'">Login</button>
+      <button onclick="location.href='{% url "register" %}'">Register</button>
+    </section>
+    {% include "footer.html" %}
+  </body>
 </html>
