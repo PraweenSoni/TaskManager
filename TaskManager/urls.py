@@ -23,4 +23,5 @@ urlpatterns = [
     path('', views.home),
     path('', include('accounts.urls')),
     path('todo/', include('todo.urls')),
+    path('notes/', include('notes.urls')),
 ]

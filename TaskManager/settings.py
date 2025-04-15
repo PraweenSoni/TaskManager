@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'todo',
+    'notes',
 ]
 
 AUTH_USER_MODEL = 'auth.User'  # default remains unchanged

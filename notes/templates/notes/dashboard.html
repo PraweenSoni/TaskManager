@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Taskify - Notes</title>
+    <link rel="stylesheet" href="{% static 'css/comman.css' %}" />
+    <style>
+      .container{
+        width: 98vw;
+        display: flex;
+        justify-content: center;
+      }
+      .notes-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        overflow-y: auto;
+        height: 80%;
+      }
+
+      h2 {
+        text-align: center;
+        color: #2b6777;
+        margin-bottom: 20px;
+      }
+
+      .input-section form {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
+
+      .input-section input,
+      .input-section textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        outline: none;
+      }
+
+      .input-section button {
+        padding: 10px 20px;
+        background-color: #2b6777;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .input-section button:hover {
+        background-color: #3b8b9c;
+      }
+
+      .note-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .note-item {
+        background-color: #f8f9fa;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .note-item button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #2b6777;
+      }
+
+      .note-item button:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <div class="container">
+      <div class="notes-container">
+        <h2>🗒️ Taskify - Notes<a href="{% url 'dashboard' %}">⬅️ Back</a></h2>
+        
+
+        <!-- Input Section -->
+        <div class="input-section">
+          {% comment %}
+          <input
+            type="text"
+            id="noteTitle"
+            placeholder="Note something down!!"
+          />
+          {% endcomment %}
+          <form action="{% url 'notes_dashboard' %}" method="POST">
+            {% csrf_token %} {% comment %} {{ form.as_p }} {% endcomment %}
+            <input
+              type="text"
+              id="noteTitle"
+              name="title"
+              id="title"
+              placeholder="Enter note title..."
+            />
+            {% if form.title.errors %}
+            <div class="error">{{ form.title.errors }}</div>
+            {% endif %}
+            <textarea
+              id="noteContent"
+              rows="4"
+              name="description"
+              id="description"
+              placeholder="Note something down..."
+            ></textarea>
+            {% if form.description.errors %}
+            <div class="error">{{ form.description.errors }}</div>
+            {% endif %}
+            <button type="submit">Add Note</button>
+            {% comment %} <button onclick="addNote()">Add Note</button> {%endcomment %}
+          </form>
+        </div>
+
+        <!-- Notes List -->
+        <ul>
+          {% for notes in note %}
+          <li style="margin-bottom: 10px">
+            <strong>{{ notes.title }}</strong> - {{ notes.description }}
+            <a href="{% url 'edit_notes' notes.id %}" title="Edit Note">Edit</a
+            >|
+            <a href="{% url 'delete_notes' notes.id %}" title="delete Note"
+              >🗑️</a
+            >
+          </li>
+          {% empty %}
+          <p>No tasks yet.</p>
+          {% endfor %}
+        </ul>
+        <ul class="note-list" id="notesList"></ul>
+      </div>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+      // Fetch notes from localStorage
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+      // Render Notes
+      function renderNotes() {
+        const list = document.getElementById("notesList");
+        list.innerHTML = "";
+
+        notes.forEach((note, index) => {
+          const li = document.createElement("li");
+          li.className = "note-item";
+
+          li.innerHTML = `
+          <div>
+            <h4>${note.title}</h4>
+            <p>${note.content}</p>
+          </div>
+          <div>
+            <button onclick="editNote(${index})">Edit</button>
+            <button onclick="deleteNote(${index})">Delete</button>
+          </div>
+        `;
+          list.appendChild(li);
+        });
+
+        localStorage.setItem("notes", JSON.stringify(notes));
+      }
+
+      // Add Note Function
+      function addNote() {
+        const title = document.getElementById("noteTitle").value.trim();
+        const content = document.getElementById("noteContent").value.trim();
+
+        if (title && content) {
+          notes.push({ title, content });
+          document.getElementById("noteTitle").value = "";
+          document.getElementById("noteContent").value = "";
+          renderNotes();
+        }
+      }
+
+      // Edit Note Function
+      function editNote(index) {
+        const note = notes[index];
+        const newTitle = prompt("Edit Title:", note.title);
+        const newContent = prompt("Edit Content:", note.content);
+
+        if (newTitle !== null && newContent !== null) {
+          notes[index] = { title: newTitle, content: newContent };
+          renderNotes();
+        }
+      }
+
+      // Delete Note Function
+      function deleteNote(index) {
+        notes.splice(index, 1);
+        renderNotes();
+      }
+
+      // Initial Render
+      renderNotes();
+    </script>
+  </body>
+</html>
