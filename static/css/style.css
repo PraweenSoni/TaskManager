@@ -19,7 +19,7 @@ body {
   background: white;
   padding: 15px;
   margin: 10px;
-  width: 200px;
+  width: 15em;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -37,4 +37,23 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
+}
+
+.content {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: start;
+}
+
+.content h2,.content h3 {
+  color: #2b6777;
+}
+
+.content ul {
+  list-style-type: disc;
+  padding-left: 20px;
 }

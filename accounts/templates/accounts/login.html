@@ -116,10 +116,13 @@
     <section class="login-container">
       <h2>Welcome Back</h2>
       <h2>Login</h2>
+      {% if messages %} {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %} {% endif %}
       <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-          <label for="email">Email or Username</label>
+          <label for="email">Email</label>
           <input type="text" id="email" name="email" required />
           {% if form.email.errors %}
           <div class="error">{{ form.email.errors }}</div>
@@ -140,14 +143,9 @@
           {% comment %}
           <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
           {% endcomment %}
-          <p>
-            New to Taskify? <a href="{% url 'register' %}">Register here</a>
-          </p>
+          <p>New to Taskify? <a href="{% url 'register' %}">Register here</a>||<a href="{% url 'passwordReset' %}">Forget Password</a></p>
         </div>
       </form>
-      {% if messages %} {% for message in messages %}
-      <p>{{ message }}</p>
-      {% endfor %} {% endif %}
     </section>
 
     {% include "footer.html" %}

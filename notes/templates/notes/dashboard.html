@@ -41,6 +41,7 @@
         border-radius: 8px;
         margin-bottom: 10px;
         outline: none;
+        resize: vertical;
       }
 
       .input-section button {
@@ -117,6 +118,7 @@
               name="description"
               id="description"
               placeholder="Note something down..."
+            
             ></textarea>
             {% if form.description.errors %}
             <div class="error">{{ form.description.errors }}</div>
@@ -127,86 +129,24 @@
         </div>
 
         <!-- Notes List -->
-        <ul>
+        <ul class="note-list">
           {% for notes in note %}
-          <li style="margin-bottom: 10px">
-            <strong>{{ notes.title }}</strong> - {{ notes.description }}
-            <a href="{% url 'edit_notes' notes.id %}" title="Edit Note">Edit</a
-            >|
-            <a href="{% url 'delete_notes' notes.id %}" title="delete Note"
-              >🗑️</a
-            >
+          <li class="note-item">
+            <div>
+              <h4>{{ notes.title }}</h4>
+              <p>{{ notes.description }}</p>
+            </div>
+            <div>
+              <a href="{% url 'edit_notes' notes.id %}" title="Edit Note">Edit</a>|
+              <a href="{% url 'delete_notes' notes.id %}" title="delete Note">🗑️</a>
+            </div>
           </li>
           {% empty %}
           <p>No tasks yet.</p>
           {% endfor %}
         </ul>
-        <ul class="note-list" id="notesList"></ul>
       </div>
     </div>
     {% include 'footer.html' %}
-    <script>
-      // Fetch notes from localStorage
-      let notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-      // Render Notes
-      function renderNotes() {
-        const list = document.getElementById("notesList");
-        list.innerHTML = "";
-
-        notes.forEach((note, index) => {
-          const li = document.createElement("li");
-          li.className = "note-item";
-
-          li.innerHTML = `
-          <div>
-            <h4>${note.title}</h4>
-            <p>${note.content}</p>
-          </div>
-          <div>
-            <button onclick="editNote(${index})">Edit</button>
-            <button onclick="deleteNote(${index})">Delete</button>
-          </div>
-        `;
-          list.appendChild(li);
-        });
-
-        localStorage.setItem("notes", JSON.stringify(notes));
-      }
-
-      // Add Note Function
-      function addNote() {
-        const title = document.getElementById("noteTitle").value.trim();
-        const content = document.getElementById("noteContent").value.trim();
-
-        if (title && content) {
-          notes.push({ title, content });
-          document.getElementById("noteTitle").value = "";
-          document.getElementById("noteContent").value = "";
-          renderNotes();
-        }
-      }
-
-      // Edit Note Function
-      function editNote(index) {
-        const note = notes[index];
-        const newTitle = prompt("Edit Title:", note.title);
-        const newContent = prompt("Edit Content:", note.content);
-
-        if (newTitle !== null && newContent !== null) {
-          notes[index] = { title: newTitle, content: newContent };
-          renderNotes();
-        }
-      }
-
-      // Delete Note Function
-      function deleteNote(index) {
-        notes.splice(index, 1);
-        renderNotes();
-      }
-
-      // Initial Render
-      renderNotes();
-    </script>
-  </body>
+    </body>
 </html>
