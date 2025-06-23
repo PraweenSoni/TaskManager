@@ -35,11 +35,12 @@
         <p>Write your thoughts, emotions, and experiences daily.</p>
       </div>
     </section>
-
+    {% comment %} {% if user.email %} {% endcomment %}
     <section class="button">
       <button onclick="location.href='{% url "login" %}'">Login</button>
       <button onclick="location.href='{% url "register" %}'">Register</button>
     </section>
+    {% comment %} {% endif %} {% endcomment %}
 
     <section id="about">
       <div class="content">

@@ -4,7 +4,6 @@ from .models import NormalUser
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
-
     class Meta:
         model = NormalUser
         fields = ['email', 'password', 'phone']

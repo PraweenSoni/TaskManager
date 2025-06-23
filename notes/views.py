@@ -34,7 +34,7 @@ def edit_notes(request, pk):
         form = NotesForm(request.POST, instance=note)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Notes updated successfully!')
+            messages.success(request, 'Notes updated successfully!', extra_tags='edit-success')
             return redirect('notes_dashboard')
     else:
         form = NotesForm(instance=note)

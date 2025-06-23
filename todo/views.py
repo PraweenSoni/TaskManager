@@ -35,7 +35,7 @@ def edit_todo(request, pk):
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Task updated successfully!')
+            messages.success(request, 'Task updated successfully!', extra_tags='edit-success')
             return redirect('todo_dashboard')
     else:
         form = TodoForm(instance=todo)

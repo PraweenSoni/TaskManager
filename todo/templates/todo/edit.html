@@ -1,8 +1,60 @@
-<h2>Edit Task: {{ todo.title }}</h2>
+{% load static %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
-<a href="{% url 'todo_dashboard' %}">Back to Dashboard</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit To-DO</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Adjust path if needed -->
+    <style>
+       #title{
+        border: 2px solid red;
+       }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit TO-DO</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'edit_todo' todo.pk %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input 
+                type="text" 
+                id="title" 
+                name="title" 
+                value="{{ form.data.title|default:form.initial.title }}" 
+                required 
+                />
+                {% if form.title.errors %}
+                <div class="error">{{ form.title.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input 
+                type="checkbox" 
+                id="completed" 
+                name="completed" 
+                {% if form.data.completed or form.initial.completed %}checked{% endif %}
+                />
+                <label for="completed">Completed</label>
+                {% if form.completed.errors %}
+                <div class="error">{{ form.completed.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <button type="submit">Update Task</button>
+            </form>
+    </div>
+</body>
+</html>

@@ -1,8 +1,46 @@
-<h2>Edit Task: {{ note.title }}</h2>
+{% load static %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
-<a href="{% url 'notes_dashboard' %}">Back to Dashboard</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Adjust path if needed -->
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Tasks</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'edit-success' in message.tags %}
+                <div class="alert alert-success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" class="edit-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Title</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <p class="error-text">{{ form.title.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" required />
+                {% comment %} {{ form.description }} {% endcomment %}
+                {% if form.description.errors %}
+                    <p class="error-text">{{ form.description.errors }}</p>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn">Update</button>
+        </form>
+    </div>
+</body>
+</html>

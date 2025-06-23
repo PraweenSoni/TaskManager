@@ -74,7 +74,7 @@
   </head>
   <body>
     {% include 'header.html' %}
-    <h1>Welcome, {{user.email}} to Taskify Dashboard</h1><a href="{% url 'logout' %}">Logout</a>
+    {% comment %} <h1>Welcome, {{user.email}} to Taskify Dashboard</h1><a href="{% url 'logout' %}">Logout</a> {% endcomment %}
     {% comment %} <p>Your phone: {{ user.phone|default:"N/A" }}</p> {% endcomment %}
     <div class="card-container">
       <!-- To-Do List -->
